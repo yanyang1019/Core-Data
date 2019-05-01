@@ -29,7 +29,7 @@
         <!--Expenses-->
         <scene sceneID="nDo-Q9-a2b">
             <objects>
-                <viewController title="Expenses" automaticallyAdjustsScrollViewInsets="NO" id="nG8-IN-Z2U" sceneMemberID="viewController">
+                <viewController title="Expenses" id="nG8-IN-Z2U" customClass="ExpensesViewController" customModule="CoreDataApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bfK-6a-0wv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -38,7 +38,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="expenseCell" textLabel="xLQ-4x-Gna" detailTextLabel="DP6-fj-NXq" style="IBUITableViewCellStyleSubtitle" id="3a8-P5-PGW">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="expenseCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="expenseCell" textLabel="xLQ-4x-Gna" detailTextLabel="DP6-fj-NXq" style="IBUITableViewCellStyleSubtitle" id="3a8-P5-PGW">
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3a8-P5-PGW" id="d58-5W-mXi">
@@ -63,6 +63,11 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="nG8-IN-Z2U" id="BAM-3s-Vqq"/>
+                                    <outlet property="delegate" destination="nG8-IN-Z2U" id="4EY-mI-lG2"/>
+                                    <outlet property="prefetchDataSource" destination="nG8-IN-Z2U" id="EV6-31-Upf"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -77,10 +82,14 @@
                     <navigationItem key="navigationItem" title="Expenses" id="Lsy-rt-NTv">
                         <barButtonItem key="rightBarButtonItem" title="+" id="rAs-4j-5PU">
                             <connections>
-                                <segue destination="m0r-3r-zcX" kind="push" id="dud-tE-ArI"/>
+                                <action selector="addNewExpense:" destination="nG8-IN-Z2U" id="aHH-8B-4US"/>
+                                <segue destination="m0r-3r-zcX" kind="show" identifier="showExpense" id="XVb-Ep-S9t"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="expensesTableView" destination="YBC-0b-l4g" id="QjE-HW-hlA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gao-Sn-Rqv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -89,7 +98,7 @@
         <!--Single Expense View Controller-->
         <scene sceneID="bvn-EI-jrF">
             <objects>
-                <viewController title="Single Expense View Controller" id="m0r-3r-zcX" sceneMemberID="viewController">
+                <viewController title="Single Expense View Controller" id="m0r-3r-zcX" customClass="SingleExpenseViewController" customModule="CoreDataApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="frb-ah-tvx">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -112,14 +121,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Expense Name..." adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JVu-c9-eab">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Expense Name..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JVu-c9-eab">
                                 <rect key="frame" x="100" y="133" width="284" height="30"/>
                                 <accessibility key="accessibilityConfiguration" hint="Expense Name..."/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Expense Amount..." textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ugz-hC-9cx">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Expense Amount..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ugz-hC-9cx">
                                 <rect key="frame" x="115" y="194" width="269" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
@@ -154,8 +163,17 @@
                         <viewLayoutGuide key="safeArea" id="sH3-b8-Laj"/>
                     </view>
                     <navigationItem key="navigationItem" id="eWS-1W-vZ6">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="nwQ-8K-sS6"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="nwQ-8K-sS6">
+                            <connections>
+                                <action selector="saveExpense:" destination="m0r-3r-zcX" id="06C-Mg-FOk"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="amountTextField" destination="Ugz-hC-9cx" id="gZQ-OB-3dG"/>
+                        <outlet property="datePicker" destination="hXZ-ab-Rcg" id="6EU-lj-Whw"/>
+                        <outlet property="nameTextField" destination="JVu-c9-eab" id="gJX-9y-OKO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OT6-oc-03E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
